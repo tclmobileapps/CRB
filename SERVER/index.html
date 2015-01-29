@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Conf Room Booking</title>
+
+  <script src="js/jquery.js"></script>
+  <script src="js/jquerymobile.js"></script>
+
+  <!-- stylesheets -->
+  <link rel="stylesheet" href="css/jquerymobile.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body id="body">
+
+  <!-- Login page -->
+  <section data-role="page" id="login">
+    <article data-role="content">
+    	<img src="images/tcl01.png" alt="Tata Capital Logo">
+    	<h3>Conference Room Booking</h3>
+    	<form method="get" action="#home" name="frmLogin" id="frmLogin">
+    		<fieldset class="ui-field-contain">
+	    		<label for="frmLogin_txtUser">User Code</label>
+	    		<input type="text" name="frmLogin_txtUser" id="frmLogin_txtUser" value="531953" placeholder="Enter your User ID" />
+
+	    		<label for="frmLogin_txtPassword">Password</label>
+	    		<input type="password" name="frmLogin_txtPassword" id="frmLogin_txtPassword" value="531953" placeholder="Enter your User ID" />
+    		</fieldset>
+			<a href="#" onclick="frmLogin_try2Login()" class="ui-btn ui-btn-b ui-corner-all">Login</a>
+    	</form>
+    </article>
+  </section>
+
+  <!-- Home page -->
+  <section data-role="page" id="home" class="header_default footer_default validate_default" data-title="Home">
+    <article data-role="content">
+    	<h3>Conference Room Booking</h3>
+    	<h3>Main Menu</h3>
+    	<h3>&nbsp;</h3>
+    	<ul data-role="listview">
+    		<li><a href="#find">Find a Room</a></li>
+    		<li><a href="#book">Book a Room</a></li>
+    		<li><a href="#viewRoomSchedule">View Room Schedule</a></li>
+    		<li><a href="#myView">View My Bookings</a></li>
+    	</ul>
+    </article>
+  </section>
+
+  <!-- Find page -->
+  <section data-role="page" id="find" class="header_default footer_default validate_default" data-title="Find A Room">
+    <article data-role="content">
+    	<form method="get" action="#findResult" name="frmFind" id="frmFind">
+    		<fieldset class="ui-field-contain">
+				<label for="frmFind_selLoc">Location</label>
+				<select name="frmFind_selLoc" id="frmFind_selLoc">
+					<option value="">(Choose One)</option>
+				</select>
+			</fieldset>
+
+			<fieldset class="ui-field-contain">
+				<label for="frmFind_txtDate">Date</label>
+				<input type="date" name="frmFind_txtDate" id="frmFind_txtDate" value="" placeholder="For Which Date?" >
+			</fieldset>
+
+			<fieldset class="ui-field-contain">
+				<label for="frmFind_txtFromHh">From Time (15 min interval)</label>
+				<div class="ui-grid-a">
+					<div class="ui-block-a">
+						<input type="range" name="frmFind_txtFromHh" id="frmFind_txtFromHh" min="0" max="23" step="1" value="10">
+					</div>
+					<div class="ui-block-b">
+						<label for="frmFind_txtFromMi" class="ui-hidden-accessible">Upto Time</label>
+						<input type="range" name="frmFind_txtFromMi" id="frmFind_txtFromMi" min="0" max="45" step="15" value="00">
+					</div>
+				</div>
+			</fieldset>
+
+			<fieldset class="ui-field-contain">
+				<label for="frmFind_txtUptoHh">Upto Time (15 min interval)</label>
+				<div class="ui-grid-a">
+					<div class="ui-block-a">
+						<input type="range" name="frmFind_txtUptoHh" id="frmFind_txtUptoHh" min="0" max="24" step="1" value="12">
+					</div>
+					<div class="ui-block-b">
+						<label for="frmFind_txtUptoMi" class="ui-hidden-accessible">Upto Time</label>
+						<input type="range" name="frmFind_txtUptoMi" id="frmFind_txtUptoMi" min="0" max="45" step="15" value="00">
+					</div>
+				</div>
+			</fieldset>
+			<fieldset class="ui-field-contain">
+
+				<label for="frmFind_txtPerson"># of Persons (1 .. 50)</label>
+				<input type="range" name="frmFind_txtPerson" id="frmFind_txtPerson" value="1" min="1" max="50" />
+			
+			</fieldset>
+			<fieldset class="ui-field-contain">
+			
+			    <div class="ui-grid-a">
+				    <div class="ui-block-a">
+						<label for="frmFind_cbVC">VC?</label>
+						<input type="checkbox" name="frmFind_cbVC" id="frmFind_cbVC" data-mini="true">
+					</div>
+				    <div class="ui-block-b">
+						<label for="frmFind_cbProjector">Projector?</label>
+						<input type="checkbox" name="frmFind_cbProjector" id="frmFind_cbProjector" data-mini="true">
+					</div>
+				</div>
+			</fieldset>
+
+			<a href="#" onclick="frmFind_try2Find()" class="ui-btn ui-btn-b ui-corner-all">Find</a>
+		</form>
+    </article>
+  </section>
+
+  <!-- Find Result page -->
+  <section data-role="page" id="findResult" class="header_default footer_default validate_default" data-title="Find Result">
+    <article data-role="content" id="findResultContent">
+    	<p>Checking Room Availability. Please wait...</p>
+     </article>
+  </section>
+
+  <!-- Book Result page -->
+  <section data-role="page" id="bookResult" class="header_default footer_default validate_default" data-title="Booking Status">
+    <article data-role="content" id="bookResultContent">
+    	<p>Trying to book the room. Please wait...</p>
+    </article>
+  </section>
+
+  <!-- Book page -->
+  <section data-role="page" id="book" class="header_default footer_default validate_default" data-title="Book A Room">
+    <article data-role="content">
+    	<form method="get" action="#bookResult" name="frmBook" id="frmBook">
+    		<fieldset class="ui-field-contain">
+				<label for="frmBook_selLoc">Location</label>
+				<select name="frmBook_selLoc" id="frmBook_selLoc">
+					<option value="">(Choose One)</option>
+				</select>
+			</fieldset>
+
+    		<fieldset class="ui-field-contain">
+				<label for="frmBook_selRoom">Room</label>
+				<select name="frmBook_selRoom" id="frmBook_selRoom">
+					<option value="">(Choose One)</option>
+				</select>
+			</fieldset>
+
+			<fieldset class="ui-field-contain">
+				<label for="frmBook_txtDate">Date</label>
+				<input type="date" name="frmBook_txtDate" id="frmBook_txtDate" value="" placeholder="For Which Date?" >
+			</fieldset>
+
+			<fieldset class="ui-field-contain">
+				<label for="frmBook_txtFromHh">From Time (15 min interval)</label>
+				<div class="ui-grid-a">
+					<div class="ui-block-a">
+						<input type="range" name="frmBook_txtFromHh" id="frmBook_txtFromHh" min="0" max="23" step="1" value="10">
+					</div>
+					<div class="ui-block-b">
+						<label for="frmBook_txtFromMi" class="ui-hidden-accessible">Upto Time</label>
+						<input type="range" name="frmBook_txtFromMi" id="frmBook_txtFromMi" min="0" max="45" step="15" value="00">
+					</div>
+				</div>
+			</fieldset>
+
+			<fieldset class="ui-field-contain">
+				<label for="frmBook_txtUptoHh">Upto Time (15 min interval)</label>
+				<div class="ui-grid-a">
+					<div class="ui-block-a">
+						<input type="range" name="frmBook_txtUptoHh" id="frmBook_txtUptoHh" min="0" max="24" step="1" value="12">
+					</div>
+					<div class="ui-block-b">
+						<label for="frmBook_txtUptoMi" class="ui-hidden-accessible">Upto Time</label>
+						<input type="range" name="frmBook_txtUptoMi" id="frmBook_txtUptoMi" min="0" max="45" step="15" value="00">
+					</div>
+				</div>
+			</fieldset>
+
+			<a href="#" onclick="frmBook_try2Book()" class="ui-btn ui-btn-b ui-corner-all">Book the Room</a>
+		</form>
+    </article>
+  </section>
+
+  <!-- ViewRoomSchedule page -->
+  <section data-role="page" id="viewRoomSchedule" class="header_default footer_default validate_default" data-title="Room Schedule">
+    <article data-role="content">
+    	<form method="get" action="#viewRoomScheduleResult" name="frmViewRoomSchedule" id="frmViewRoomSchedule">
+    		<fieldset class="ui-field-contain">
+				<label for="frmViewRoomSchedule_selLoc">Location</label>
+				<select name="frmViewRoomSchedule_selLoc" id="frmViewRoomSchedule_selLoc">
+					<option value="">(Choose One)</option>
+				</select>
+			</fieldset>
+
+    		<fieldset class="ui-field-contain">
+				<label for="frmViewRoomSchedule_selRoom">Room</label>
+				<select name="frmViewRoomSchedule_selRoom" id="frmViewRoomSchedule_selRoom">
+					<option value="">(Choose One)</option>
+				</select>
+			</fieldset>
+
+			<fieldset class="ui-field-contain">
+				<label for="frmViewRoomSchedule_txtDate">Date</label>
+				<input type="date" name="frmViewRoomSchedule_txtDate" id="frmViewRoomSchedule_txtDate" value="" placeholder="For Which Date?" >
+			</fieldset>
+
+			<a href="#" onclick="viewARoomSchedule()" class="ui-btn ui-btn-b ui-corner-all">View Room Schedule</a>
+		</form>
+    </article>
+  </section>
+
+  <!-- View Room Schedule Result page -->
+  <section data-role="page" id="viewRoomScheduleResult" class="header_default footer_default validate_default" data-title="Room Schedule">
+    <article data-role="content" id="viewRoomScheduleResultContent">
+    	<p>Retrieving the room schedule. Please wait...</p>
+    </article>
+  </section>
+
+  <!-- myView page -->
+  <section data-role="page" id="myView" class="header_default footer_default validate_default" data-title="My Bookings">
+    <article data-role="content">
+    	<form method="get" action="#myViewResult" name="frmMyView" id="frmMyView">
+			<fieldset class="ui-field-contain">
+				<label for="frmMyView_txtDate">Date</label>
+				<input type="date" name="frmMyView_txtDate" id="frmMyView_txtDate" value="" placeholder="For Which Date?" >
+			</fieldset>
+
+			<a href="#myViewResult" class="ui-btn ui-btn-b ui-corner-all">View My Bookings</a>
+			<!--
+			<a href="#" onclick="myViewAction()" class="ui-btn ui-btn-b ui-corner-all">View My Bookings</a>
+			-->
+		</form>
+    </article>
+  </section>
+
+  <!-- My View Result page -->
+  <section data-role="page" id="myViewResult" class="header_default footer_default validate_default" data-title="My Bookings">
+    <article data-role="content" id="myViewResultContent">
+    	<p>Retrieving your booking information. Please wait...</p>
+    </article>
+  </section>
+
+  <!-- ShowMeeting page -->
+  <section data-role="page" id="showMeeting" class="header_default footer_default validate_default" data-title="My Meeting">
+    <article data-role="content">
+		<fieldset class="ui-field-contain ui-hidden-accessible">
+			<label for="frmShowMeeting_BookingID">Booking Id</label>
+			<input type="text" name="frmShowMeeting_BookingID" id="frmShowMeeting_BookingID" value="" placeholder="" >
+		</fieldset>
+
+		<fieldset class="ui-field-contain ui-hidden-accessible">
+			<label for="frmShowMeeting_Location">Location</label>
+			<input type="text" name="frmShowMeeting_Location" id="frmShowMeeting_Location" value="" placeholder="" >
+		</fieldset>
+
+		<fieldset class="ui-field-contain ui-hidden-accessible">
+			<label for="frmShowMeeting_Room">Room</label>
+			<input type="text" name="frmShowMeeting_Room" id="frmShowMeeting_Room" value="" placeholder="" >
+		</fieldset>
+
+		<fieldset class="ui-field-contain ui-hidden-accessible">
+			<label for="frmShowMeeting_Date">Date</label>
+			<input type="text" name="frmShowMeeting_Date" id="frmShowMeeting_Date" value="" placeholder="" >
+		</fieldset>
+
+		<fieldset class="ui-field-contain ui-hidden-accessible">
+			<label for="frmShowMeeting_FromTime">From Time</label>
+			<input type="text" name="frmShowMeeting_FromTime" id="frmShowMeeting_FromTime" value="" placeholder="" >
+		</fieldset>
+
+		<fieldset class="ui-field-contain ui-hidden-accessible">
+			<label for="frmShowMeeting_UptoTime">Upto Time</label>
+			<input type="text" name="frmShowMeeting_UptoTime" id="frmShowMeeting_UptoTime" value="" placeholder="" >
+		</fieldset>
+
+    	<h3 class="line1">Location</h3>
+    	<h3 class="line2">Date</h3>
+    	<ul data-role="listview">
+    		<li><a href="#cancel">Cancel the Booking</a></li>
+    		<li><a href="#reassign">Reassign the Booking</a></li>
+    		<li><a href="#split">Split the Meeting</a></li>
+    	</ul>
+    </article>
+  </section>
+
+  <!-- Cancel booking page -->
+  <section data-role="page" id="cancel" class="header_default footer_default validate_default" data-title="Cancel">
+    <article data-role="content" id="cancelContent">
+    	<p>Cancelling your booking. Please wait...</p>
+    </article>
+  </section>
+
+  <!-- Reassign booking page -->
+  <section data-role="page" id="reassign" class="header_default footer_default validate_default" data-title="Reassign">
+    <article data-role="content" id="reassignContent">
+    	<h3 class="line1">Reassigning your booking. Please wait...</h3>
+    	<h3 class="line2"></h3>
+    	<form method="get" action="#home" name="frmReassign" id="frmReassign">
+    		<fieldset class="ui-field-contain">
+	    		<label for="frmReassign_ToUser">Reassign To User ID</label>
+	    		<input type="text" name="frmReassign_ToUser" id="frmReassign_ToUser" value="" placeholder="Enter the Emp Code" />
+
+    		</fieldset>
+			<a href="#" onclick="frmReassign_try2Reassign()" class="ui-btn ui-btn-b ui-corner-all">Reassign Booking</a>
+    	</form>    	
+    </article>
+  </section>
+
+  <!-- Split booking page -->
+  <section data-role="page" id="split" class="header_default footer_default validate_default" data-title="Split">
+    <article data-role="content" id="splitContent">
+    	<h3>Split A Booking</h3>
+    	<h3 class="line1"></h3>
+    	<h3 class="line2"></h3>
+    	<form method="get" action="#home" name="frmSplit" id="frmSplit">
+    		<fieldset class="ui-field-contain">
+				<label for="frmSplit_txtSplitHh">From Time (15 min interval)</label>
+				<div class="ui-grid-a">
+					<div class="ui-block-a">
+						<input type="range" name="frmSplit_txtSplitHh" id="frmSplit_txtSplitHh" min="0" max="23" step="1" value="0">
+					</div>
+					<div class="ui-block-b">
+						<label for="frmSplit_txtSplitMi" class="ui-hidden-accessible">Upto Time</label>
+						<input type="range" name="frmSplit_txtSplitMi" id="frmSplit_txtSplitMi" min="0" max="45" step="15" value="00">
+					</div>
+				</div>
+    		</fieldset>
+			<a href="#" onclick="frmSplit_try2Split()" class="ui-btn ui-btn-b ui-corner-all">Split Booking</a>
+    	</form>    	
+    </article>
+  </section>
+
+  <script src="js/crb.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>

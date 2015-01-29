@@ -1,0 +1,25 @@
+/*
+TCL blue: #2c6eb5
+TCL lime: #d7df36;
+*/
+body{
+
+}
+
+#login img {
+	width: 100%;
+	max-width: 200px;
+	display: block;
+	margin: 0 auto;
+}
+
+#login, #home, #find, #findResult, #book, #bookResult, #viewRoomSchedule, #viewRoomScheduleResult, #myView, #myViewResult, #showMeeting,
+#cancel, #reassign, #split {
+	background-color: #d7df36;
+}
+
+#login h1, #login h2, #login h3,
+#home h1, #home h2, #home h3,
+h1, h2, h3, h4 {
+	text-align: center;
+}
